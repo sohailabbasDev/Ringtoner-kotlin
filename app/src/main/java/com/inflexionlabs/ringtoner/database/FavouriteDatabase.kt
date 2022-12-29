@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.inflexionlabs.ringtoner.database.model.Favourite
 
-@Database(entities = [Favourite::class], version = 1)
+@Database(entities = [Favourite::class], version = 1, exportSchema = false)
 abstract class FavouriteDatabase : RoomDatabase(){
     abstract val favouriteDao : FavouriteDao
 
