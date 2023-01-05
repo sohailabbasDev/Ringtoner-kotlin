@@ -90,7 +90,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 MobileAds.initialize(this)
-                loadAd()
 
                 val navController = rememberNavController()
                 val scrollState = rememberLazyListState()
@@ -104,16 +103,23 @@ class MainActivity : ComponentActivity() {
                 {it.calculateBottomPadding()
                     HomeNavGraph(navController = navController, scrollState, status)
                 }
+
+                loadAd()
+                
             }
         }
     }
 
     private fun loadAd() {
-        adsHandler.post {
-            AdManager.showInterstitial(this)
-            if (AdManager.mInterstitialAd == null){
-                adsHandler.postDelayed(refresh, 80 * 1000) //called every 60 seconds
+        try {
+            adsHandler.post {
+                AdManager.showInterstitial(this)
+                if (AdManager.mInterstitialAd == null){
+                    adsHandler.postDelayed(refresh, 80 * 1000) //called every 60 seconds
+                }
             }
+        }catch (e : Exception){
+            e.stackTrace
         }
     }
 
