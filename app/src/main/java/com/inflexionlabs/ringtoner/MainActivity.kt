@@ -1,8 +1,6 @@
 package com.inflexionlabs.ringtoner
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
@@ -31,6 +29,8 @@ import com.inflexionlabs.ringtoner.presentation.bottom_bar.BottomBar
 import com.inflexionlabs.ringtoner.presentation.navigation.HomeNavGraph
 import com.inflexionlabs.ringtoner.ui.theme.RingtonerTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalFoundationApi
 @ExperimentalPermissionsApi
@@ -38,9 +38,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var connectivityObserver: ConnectivityObserver
-
-    private val refresh = kotlinx.coroutines.Runnable { loadAd() }
-    private val adsHandler = object : Handler(Looper.getMainLooper()){}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
@@ -104,22 +101,18 @@ class MainActivity : ComponentActivity() {
                     HomeNavGraph(navController = navController, scrollState, status)
                 }
 
-                loadAd()
-                
-            }
-        }
-    }
+                LaunchedEffect(key1 = true){
+                    repeat(5){
+                        delay(60.seconds)
+                        try {
+                            AdManager.showInterstitial(this@MainActivity)
 
-    private fun loadAd() {
-        try {
-            adsHandler.post {
-                AdManager.showInterstitial(this)
-                if (AdManager.mInterstitialAd == null){
-                    adsHandler.postDelayed(refresh, 80 * 1000) //called every 60 seconds
+                        }catch (e : Exception){
+                            e.printStackTrace()
+                        }
+                    }
                 }
             }
-        }catch (e : Exception){
-            e.stackTrace
         }
     }
 
