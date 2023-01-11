@@ -17,9 +17,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.firebase.FirebaseApp
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.inflexionlabs.ringtoner.firebase_database.RingtonesViewModel
 import com.inflexionlabs.ringtoner.operations.AdManager
 import com.inflexionlabs.ringtoner.operations.RingtonePlayer
@@ -50,11 +47,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             RingtonerTheme {
 
-                FirebaseApp.initializeApp(/*context=*/this)
-                val firebaseAppCheck = FirebaseAppCheck.getInstance()
-                firebaseAppCheck.installAppCheckProviderFactory(
-                    PlayIntegrityAppCheckProviderFactory.getInstance()
-                )
+//                FirebaseApp.initializeApp(/*context=*/this)
+//                val firebaseAppCheck = FirebaseAppCheck.getInstance()
+//                firebaseAppCheck.installAppCheckProviderFactory(
+//                    PlayIntegrityAppCheckProviderFactory.getInstance()
+//                )
 
                 val appUpdateManager = AppUpdateManagerFactory.create(this)
 
