@@ -22,3 +22,5 @@
 
 -keep class com.inflexionlabs.ringtoner.database.model.Favourite
 -keep class com.inflexionlabs.ringtoner.firebase_database.model.*
+-keep class com.inflexionlabs.ringtoner.database.FavouritesViewModel
+-keep class com.inflexionlabs.ringtoner.firebase_database.RingtonesViewModel
