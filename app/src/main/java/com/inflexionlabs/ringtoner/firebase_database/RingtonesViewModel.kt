@@ -1,5 +1,6 @@
 package com.inflexionlabs.ringtoner.firebase_database
 
+import androidx.annotation.Keep
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@Keep
 class RingtonesViewModel @Inject constructor(private val repository: RingtonesRepository) : ViewModel() {
     
     private val _ringtonesListState : MutableState<RingtonesListState> = mutableStateOf(RingtonesListState.Empty)

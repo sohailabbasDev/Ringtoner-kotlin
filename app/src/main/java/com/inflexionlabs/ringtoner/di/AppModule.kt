@@ -22,8 +22,7 @@ object AppModule {
     @Singleton
     fun provideFavouritesDatabase(app : Application) : FavouriteDatabase{
         return Room.databaseBuilder(
-            app,
-            FavouriteDatabase::class.java,
+            app, FavouriteDatabase::class.java,
             FavouriteDatabase.DATABASE_NAME
         ).build()
     }

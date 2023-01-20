@@ -1,6 +1,7 @@
 package com.inflexionlabs.ringtoner.database
 
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@Keep
 class FavouritesViewModel @Inject constructor(private val favouriteUseCase: FavouriteUseCases) : ViewModel(){
 
     private val _favourites = mutableStateOf(FavouriteState())
