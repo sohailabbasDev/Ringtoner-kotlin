@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 object RingtonePlayer {
-    private var mediaPlayer: MediaPlayer = MediaPlayer()
+    private lateinit var mediaPlayer: MediaPlayer
 
     private val playingState : MutableState<PlayingState> = mutableStateOf(PlayingState.Empty)
     val playingStatePub : State<PlayingState> = playingState
@@ -21,6 +21,10 @@ object RingtonePlayer {
     private val mediaJob = Job()
 
     private val mediaScope = CoroutineScope(Dispatchers.Main + mediaJob)
+
+    fun makePlayer(){
+        mediaPlayer = MediaPlayer()
+    }
 
     fun playRingtone(url: String, name: String) = mediaScope.launch(Dispatchers.IO){
 

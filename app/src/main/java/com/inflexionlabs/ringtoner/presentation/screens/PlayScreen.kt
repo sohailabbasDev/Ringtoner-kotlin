@@ -1,7 +1,6 @@
 package com.inflexionlabs.ringtoner.presentation.screens
 
 import android.Manifest
-import android.app.Activity
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Environment
@@ -11,8 +10,6 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -21,9 +18,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,7 +34,6 @@ import com.inflexionlabs.ringtoner.database.FavouritesViewModel
 import com.inflexionlabs.ringtoner.database.model.Favourite
 import com.inflexionlabs.ringtoner.database.state.FavouriteEvent
 import com.inflexionlabs.ringtoner.firebase_database.model.Ringtone
-import com.inflexionlabs.ringtoner.operations.AdManager
 import com.inflexionlabs.ringtoner.operations.Downloader
 import com.inflexionlabs.ringtoner.operations.RingtonePlayer
 import com.inflexionlabs.ringtoner.operations.connectivity.ConnectivityObserver
@@ -88,29 +82,29 @@ fun PlayScreen(navHostController: NavHostController,
         mutableStateOf(false)
     }
 
-    var adSeen by remember{
-        mutableStateOf(false)
-    }
+//    var adSeen by remember{
+//        mutableStateOf(false)
+//    }
+//
+//    var enabled by remember{
+//        mutableStateOf(false)
+//    }
 
-    var enabled by remember{
-        mutableStateOf(false)
-    }
+//    var adLoading by remember{
+//        mutableStateOf(false)
+//    }
 
-    var adLoading by remember{
-        mutableStateOf(false)
-    }
-
-    val scale by animateFloatAsState(
-        targetValue = if (enabled) .9f else 1f,
-        animationSpec = repeatable(
-            iterations = 5,
-            animation = tween(durationMillis = 50, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        finishedListener = {
-            enabled = false
-        }
-    )
+//    val scale by animateFloatAsState(
+//        targetValue = if (enabled) .9f else 1f,
+//        animationSpec = repeatable(
+//            iterations = 5,
+//            animation = tween(durationMillis = 50, easing = LinearEasing),
+//            repeatMode = RepeatMode.Reverse
+//        ),
+//        finishedListener = {
+//            enabled = false
+//        }
+//    )
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickContact()) {uri ->
         if (uri != null){
@@ -286,10 +280,10 @@ fun PlayScreen(navHostController: NavHostController,
                                 return@clickable
                             }
 
-                            if (!adSeen) {
-                                enabled = true
-                                return@clickable
-                            }
+//                            if (!adSeen) {
+//                                enabled = true
+//                                return@clickable
+//                            }
 
                             if (isLowerSDK) {
                                 if (!writeExternalPermission.status.isGranted) {
@@ -347,10 +341,10 @@ fun PlayScreen(navHostController: NavHostController,
                                 return@clickable
                             }
 
-                            if (!adSeen) {
-                                enabled = true
-                                return@clickable
-                            }
+//                            if (!adSeen) {
+//                                enabled = true
+//                                return@clickable
+//                            }
 
                             if (isLowerSDK) {
                                 if (!writeExternalPermission.status.isGranted) {
@@ -408,10 +402,10 @@ fun PlayScreen(navHostController: NavHostController,
                                 return@clickable
                             }
 
-                            if (!adSeen) {
-                                enabled = true
-                                return@clickable
-                            }
+//                            if (!adSeen) {
+//                                enabled = true
+//                                return@clickable
+//                            }
 
                             if (isLowerSDK) {
                                 if (!writeExternalPermission.status.isGranted) {
@@ -470,10 +464,10 @@ fun PlayScreen(navHostController: NavHostController,
                                 return@clickable
                             }
 
-                            if (!adSeen) {
-                                enabled = true
-                                return@clickable
-                            }
+//                            if (!adSeen) {
+//                                enabled = true
+//                                return@clickable
+//                            }
 
                             if (!contactPermission.status.isGranted) {
                                 contactPermissionAsk = true
@@ -499,10 +493,10 @@ fun PlayScreen(navHostController: NavHostController,
                                 return@clickable
                             }
 
-                            if (!adSeen) {
-                                enabled = true
-                                return@clickable
-                            }
+//                            if (!adSeen) {
+//                                enabled = true
+//                                return@clickable
+//                            }
 
                             if (isLowerSDK) {
                                 if (!writeExternalPermission.status.isGranted) {
@@ -533,42 +527,42 @@ fun PlayScreen(navHostController: NavHostController,
                     text = "Download"
                 )
 
-                Button(modifier = Modifier
-                    .padding(top = 24.dp)
-                    .alpha(if (adSeen) 0f else 1f)
-                    .background(MaterialTheme.colors.primary)
-                    .graphicsLayer {
-                        scaleX = if (enabled) scale else 1f
-                        scaleY = if (enabled) scale else 1f
-                    }, onClick = {
-                        if (!adSeen) {
-                            try {
-                                adLoading = true
-                                AdManager.loadRewardedAd(context){ bool ->
-                                    if (bool){
-                                        AdManager.mRewardedAd?.show(context as Activity){
-                                            adSeen = true
-                                        }
-                                    }
-                                }
-                            }catch (e : Exception){
-                                e.stackTrace
-                                adSeen = false
-                                adLoading = false
-                            }
-                        }
-                    },
-                    enabled = !adLoading ) {
-                    if(adLoading){
-                        Text(text = "Loading ad please wait...",
-                            textAlign = TextAlign.Center,
-                            color = Color.White)
-                    }else{
-                        Text(text = "Watch an ad and unlock all options",
-                            textAlign = TextAlign.Center,
-                            color = Color.White)
-                    }
-                }
+//                Button(modifier = Modifier
+//                    .padding(top = 24.dp)
+//                    .alpha(if (adSeen) 0f else 1f)
+//                    .background(MaterialTheme.colors.primary)
+//                    .graphicsLayer {
+//                        scaleX = if (enabled) scale else 1f
+//                        scaleY = if (enabled) scale else 1f
+//                    }, onClick = {
+//                        if (!adSeen) {
+//                            try {
+//                                adLoading = true
+//                                AdManager.loadRewardedAd(context){ bool ->
+//                                    if (bool){
+//                                        AdManager.mRewardedAd?.show(context as Activity){
+//                                            adSeen = true
+//                                        }
+//                                    }
+//                                }
+//                            }catch (e : Exception){
+//                                e.stackTrace
+//                                adSeen = false
+//                                adLoading = false
+//                            }
+//                        }
+//                    },
+//                    enabled = !adLoading ) {
+//                    if(adLoading){
+//                        Text(text = "Loading ad please wait...",
+//                            textAlign = TextAlign.Center,
+//                            color = Color.White)
+//                    }else{
+//                        Text(text = "Watch an ad and unlock all options",
+//                            textAlign = TextAlign.Center,
+//                            color = Color.White)
+//                    }
+//                }
             }
 
 

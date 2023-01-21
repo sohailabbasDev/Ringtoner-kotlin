@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 //                    PlayIntegrityAppCheckProviderFactory.getInstance()
 //                )
 
+                RingtonePlayer.makePlayer()
                 val appUpdateManager = AppUpdateManagerFactory.create(this)
 
                 // Returns an intent object that you use to check for an update.
@@ -99,7 +100,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 LaunchedEffect(key1 = true){
-                    repeat(5){
+                    repeat(20){
                         delay(60.seconds)
                         try {
                             AdManager.showInterstitial(this@MainActivity)
