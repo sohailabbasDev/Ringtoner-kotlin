@@ -9,16 +9,17 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.android.gms.ads.MobileAds
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.inflexionlabs.ringtoner.firebase_database.RingtonesViewModel
-import com.inflexionlabs.ringtoner.operations.AdManager
 import com.inflexionlabs.ringtoner.operations.RingtonePlayer
 import com.inflexionlabs.ringtoner.operations.connectivity.ConnectivityObserver
 import com.inflexionlabs.ringtoner.operations.connectivity.NetworkConnectivityObserver
@@ -26,8 +27,6 @@ import com.inflexionlabs.ringtoner.presentation.bottom_bar.BottomBar
 import com.inflexionlabs.ringtoner.presentation.navigation.HomeNavGraph
 import com.inflexionlabs.ringtoner.ui.theme.RingtonerTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.seconds
 
 @ExperimentalFoundationApi
 @ExperimentalPermissionsApi
@@ -84,7 +83,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                MobileAds.initialize(this)
+//                MobileAds.initialize(this)
 
                 val navController = rememberNavController()
                 val scrollState = rememberLazyListState()
@@ -99,16 +98,16 @@ class MainActivity : ComponentActivity() {
                     HomeNavGraph(navController = navController, scrollState, status)
                 }
 
-                LaunchedEffect(key1 = true){
-                    repeat(20){
-                        delay(60.seconds)
-                        try {
-                            AdManager.showInterstitial(this@MainActivity)
-                        }catch (e : Exception){
-                            e.printStackTrace()
-                        }
-                    }
-                }
+//                LaunchedEffect(key1 = true){
+//                    repeat(20){
+//                        delay(60.seconds)
+//                        try {
+//                            AdManager.showInterstitial(this@MainActivity)
+//                        }catch (e : Exception){
+//                            e.printStackTrace()
+//                        }
+//                    }
+//                }
             }
         }
     }

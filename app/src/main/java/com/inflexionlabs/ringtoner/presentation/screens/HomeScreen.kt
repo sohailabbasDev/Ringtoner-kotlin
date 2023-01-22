@@ -145,7 +145,8 @@ fun HomeScreen(networkStatus: ConnectivityObserver.Status,
                     items(ringtonesListState.ringtones.size){num ->
                         RingtoneCard(
                             ringtone = ringtonesListState.ringtones[num],
-                            onArrowClick = { navHostController.currentBackStackEntry?.
+                            onArrowClick = {
+                                navHostController.currentBackStackEntry?.
                                 savedStateHandle?.set(key = "ringtone", value = ringtonesListState.ringtones[num])
                                 navHostController.navigate(Routes.Player.route)},
                             onPlayClick = {
